@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/simonSays"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#e0e0e0"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/LblSimonSays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="30dp"
+        android:text=""
+        android:textSize="30dp"
+        android:textColor="#FF0000"
+        />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <Button
+            android:id="@+id/btnYellow"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:backgroundTint="@color/yellow"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/btnRed"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:backgroundTint="@color/red"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </GridLayout>
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <Button
+            android:id="@+id/btnBlue"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:backgroundTint="@color/blue"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/btnGreen"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:backgroundTint="@color/green"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="100dp">
+
+        <Button
+            android:id="@+id/btnEndGame"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="Terminar partida"
+            />
+
+        <Button
+            android:id="@+id/btnReDoGame"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="Reiniciar partida"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>
