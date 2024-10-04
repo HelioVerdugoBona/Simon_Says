@@ -37,7 +37,7 @@ class SimonSays:AppCompatActivity()
     */
 
     /*
-    El Array donde se guardaran los valores.
+    El Array donde se guardarán los valores.
     */
     private var arrayOfColors = ArrayList<Int>()
 
@@ -116,7 +116,7 @@ class SimonSays:AppCompatActivity()
      lista para que cambie el valor al siguiente generado.
     */
     @OptIn(DelicateCoroutinesApi::class)
-    private fun iluminateColor()
+    private fun illuminateColor()
     {
         GlobalScope.launch {
             changeColorToLuminated(arrayOfColors[0])
@@ -166,7 +166,7 @@ class SimonSays:AppCompatActivity()
         btnYellow.setOnClickListener{
             if (arrayOfColors[0] == 0)
             {
-                iluminateColor()
+                illuminateColor()
             }else
             {
                 endOfSimonSays()
@@ -178,7 +178,7 @@ class SimonSays:AppCompatActivity()
         btnRed.setOnClickListener{
             if (arrayOfColors[0] == 1)
             {
-                iluminateColor()
+                illuminateColor()
             }else
             {
                 endOfSimonSays()
@@ -190,7 +190,7 @@ class SimonSays:AppCompatActivity()
         btnBlue.setOnClickListener{
             if (arrayOfColors[0] == 2)
             {
-                iluminateColor()
+                illuminateColor()
             }else
             {
                 endOfSimonSays()
@@ -202,7 +202,7 @@ class SimonSays:AppCompatActivity()
         btnGreen.setOnClickListener{
             if (arrayOfColors[0] == 3)
             {
-                iluminateColor()
+                illuminateColor()
             }else
             {
                 endOfSimonSays()

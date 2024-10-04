@@ -8,7 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity()
 {
-    private var  simonSaysLength = 0
+    //No sirve de nada, pero la necesito para hacer el intent
+    private var  simonSaysLength = 1
 
     /*private val getResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult())
@@ -27,16 +28,25 @@ class MainActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Los botones
         val btnReady = findViewById<Button>(R.id.btnStartGame)
+        val btnReglas = findViewById<Button>(R.id.btnGameRules)
 
-
-       btnReady.setOnClickListener {
-
+        //Al hacer click en nueva partida, crea una activity para hacer la partida
+        btnReady.setOnClickListener {
              val intent = Intent(this, SimonSays::class.java)
              intent.putExtra(SimonSays.SimonColors.SIMONLENGTH, simonSaysLength)
 
-
             // getResult.launch(intent)
+        }
+
+        //Al hacer click en reglas, muestra las reglas. No estoy seguro de que vaya a hacer esta parte, solo si sobra tiempo.
+        btnReglas.setOnClickListener {
+
+
+
+
+
 
         }
 
