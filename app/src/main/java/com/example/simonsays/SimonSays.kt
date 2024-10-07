@@ -5,15 +5,15 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class SimonSays:AppCompatActivity()
 {
+    //Necesarios para hacer el intent, y por si luego quiero cambiar a una activity que devuelva un valor.
     object SimonColors{
-        //const val COLORS = "COLORS"
         const val SIMONLENGTH = "SIMON LENGTH"
     }
 
@@ -36,6 +36,7 @@ class SimonSays:AppCompatActivity()
       --> En caso de fallar se muestra un mensaje "¡Has perdido!, mejor suerte la proxima vez 😢" y se termina el juego.
     */
 
+
     /*
     El Array donde se guardarán los valores.
     */
@@ -44,41 +45,39 @@ class SimonSays:AppCompatActivity()
     //Contador de la longitud de simon says.
     private var simonSaysLength = 1
 
-    //Botones del juego
-    private val btnYellow = findViewById<Button>(R.id.btnYellow)
-    private val btnRed = findViewById<Button>(R.id.btnRed)
-    private val btnBlue = findViewById<Button>(R.id.btnBlue)
-    private val btnGreen = findViewById<Button>(R.id.btnGreen)
-
     /*
     Función principal, deshabilita los bottones, encuentra tantos colores aleatorios como simonSaysLength
     sea de grande (empezando por 1), mientras va encontrando cada color lo muestra por pantalla, termina volviendo
     a habilitar los bottones para que el jugador repita la secuencia.
     */
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun symonSaysFunc()
+    // TODO Esto no funiona como deberia
+    private fun symonSaysFunc(btnYellow: Button, btnRed: Button,
+                              btnBlue: Button, btnGreen: Button)
     {
         val txtTurn = findViewById<TextView>(R.id.LblSimonSays)
         txtTurn.text = "Es el turno de Simon"
-        changeButtons(false)
-        for (i in 0..simonSaysLength)
-        {
-            arrayOfColors.add(Random.nextInt(4))
-
-            GlobalScope.launch {
-                changeColorToLuminated(arrayOfColors[i])
-                Thread.sleep(4000)
-                changeColorToNormal(arrayOfColors[i])
+        changeButtons(false,btnYellow, btnRed, btnBlue, btnGreen)
+        lifecycleScope.launch {
+            for (i in 0 until simonSaysLength)
+            {
+                arrayOfColors.add(Random.nextInt(4))
+                changeColorToLuminated(arrayOfColors[i],btnYellow, btnRed, btnBlue, btnGreen)
+                delay(1000)
+                changeColorToNormal(arrayOfColors[i],btnYellow, btnRed, btnBlue, btnGreen)
+                delay(500)
             }
+            changeButtons(true,btnYellow, btnRed, btnBlue, btnGreen)
+            txtTurn.text = "Es tu turno"
         }
-        changeButtons(true)
-        txtTurn.text = "Es tu turno"
+
     }
 
     /*
      Cambia el estado del boton (habilitado/deshabilitado) dependiendo del valor de entrada (true/false).
     */
-    private fun changeButtons(booleanButton: Boolean){
+    private fun changeButtons(booleanButton: Boolean, btnYellow: Button, btnRed: Button,
+                              btnBlue: Button, btnGreen: Button){
+        //TODO Esto no funiona como deberia
         btnYellow.isEnabled = booleanButton
         btnRed.isEnabled = booleanButton
         btnBlue.isEnabled = booleanButton
@@ -88,10 +87,11 @@ class SimonSays:AppCompatActivity()
     /*
     Cambia el color del botton para que parezca que se ilumina.
     */
-    private fun changeColorToLuminated(color: Int)
+    private fun changeColorToLuminated(color: Int, btnYellow: Button, btnRed: Button,
+                                       btnBlue: Button, btnGreen: Button)
     {
         when (color){
-            0 -> btnYellow.setBackgroundColor(Color.rgb(242,242,108)) //#F2F26CFF
+            0 -> btnYellow.setBackgroundColor(Color.rgb(242,242,108)) //#F2F26C
             1 -> btnRed.setBackgroundColor(Color.rgb(255,127,127)) //#FF7F7F
             2 -> btnBlue.setBackgroundColor(Color.rgb(134,134,255)) //#8686FF
             3 -> btnGreen.setBackgroundColor(Color.rgb(102,202,102)) //#66CA66
@@ -101,33 +101,35 @@ class SimonSays:AppCompatActivity()
     /*
      Cambia el color del botton para que vuelva al color normal.
     */
-    private fun changeColorToNormal(color: Int)
+    private fun changeColorToNormal(color: Int, btnYellow: Button, btnRed: Button,
+                                    btnBlue: Button, btnGreen: Button)
     {
-        when (color){
-            0 -> btnYellow.setBackgroundColor(Color.YELLOW)
-            1 -> btnRed.setBackgroundColor(Color.RED)
-            2 -> btnBlue.setBackgroundColor(Color.BLUE)
-            3 -> btnGreen.setBackgroundColor(Color.GREEN)
-        }
+           btnYellow.setBackgroundColor(Color.rgb(224,224,0))
+           btnRed.setBackgroundColor(Color.RED)
+           btnBlue.setBackgroundColor(Color.BLUE)
+           btnGreen.setBackgroundColor(Color.rgb(0,128,0))
+
     }
 
     /*
      Ilumina el color del boton seleccionado y elimina la primera posición actual de la
      lista para que cambie el valor al siguiente generado.
     */
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun illuminateColor()
-    {
-        GlobalScope.launch {
-            changeColorToLuminated(arrayOfColors[0])
-            Thread.sleep(4000)
-            changeColorToNormal(arrayOfColors[0])
-        }
-        arrayOfColors.remove(arrayOfColors[0])
 
-        if (arrayOfColors.size == 0){
-            simonSaysLength ++
-            symonSaysFunc()
+    private fun illuminateColor(btnYellow: Button, btnRed: Button,
+                                btnBlue: Button, btnGreen: Button)
+    {
+        lifecycleScope.launch {
+            changeColorToLuminated(arrayOfColors[0],btnYellow, btnRed, btnBlue, btnGreen)
+            delay(250)
+            changeColorToNormal(arrayOfColors[0],btnYellow, btnRed, btnBlue, btnGreen)
+            delay(250)
+            arrayOfColors.remove(arrayOfColors[0])
+
+            if (arrayOfColors.size == 0){
+                simonSaysLength ++
+                symonSaysFunc(btnYellow, btnRed, btnBlue, btnGreen)
+            }
         }
     }
 
@@ -139,7 +141,11 @@ class SimonSays:AppCompatActivity()
     {
         val textSimonSays = findViewById<TextView>(R.id.LblSimonSays)
         textSimonSays.text = "¡Has perdido! mejor suerte la proxima vez 😢"
-        finish()
+        lifecycleScope.launch {
+            delay(4000)
+            finish()
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,16 +155,22 @@ class SimonSays:AppCompatActivity()
         val btnEnd = findViewById<Button>(R.id.btnEndGame)
         val btnRedo = findViewById<Button>(R.id.btnReDoGame)
 
+        //Botones del juego
+        val btnYellow = findViewById<Button>(R.id.btnYellow)
+        val btnRed = findViewById<Button>(R.id.btnRed)
+        val btnBlue = findViewById<Button>(R.id.btnBlue)
+        val btnGreen = findViewById<Button>(R.id.btnGreen)
+
         //Si se presiona el boton de reiniciar, setea a valores iniciales.
         btnRedo.setOnClickListener {
             simonSaysLength = 1
             arrayOfColors.clear()
-            symonSaysFunc()
+            symonSaysFunc(btnYellow, btnRed, btnBlue, btnGreen)
         }
 
         //Si se presiona el boton de finalizar termina la partida.
         btnEnd.setOnClickListener {
-            endOfSimonSays()
+            finish()
         }
 
         //Si se presiona el boton amarillo comprueba que sea el correcto, si es así ilumina el color y sigue,
@@ -166,7 +178,7 @@ class SimonSays:AppCompatActivity()
         btnYellow.setOnClickListener{
             if (arrayOfColors[0] == 0)
             {
-                illuminateColor()
+                illuminateColor(btnYellow, btnRed, btnBlue, btnGreen)
             }else
             {
                 endOfSimonSays()
@@ -178,7 +190,7 @@ class SimonSays:AppCompatActivity()
         btnRed.setOnClickListener{
             if (arrayOfColors[0] == 1)
             {
-                illuminateColor()
+                illuminateColor(btnYellow, btnRed, btnBlue, btnGreen)
             }else
             {
                 endOfSimonSays()
@@ -190,7 +202,7 @@ class SimonSays:AppCompatActivity()
         btnBlue.setOnClickListener{
             if (arrayOfColors[0] == 2)
             {
-                illuminateColor()
+                illuminateColor(btnYellow, btnRed, btnBlue, btnGreen)
             }else
             {
                 endOfSimonSays()
@@ -202,13 +214,17 @@ class SimonSays:AppCompatActivity()
         btnGreen.setOnClickListener{
             if (arrayOfColors[0] == 3)
             {
-                illuminateColor()
+                illuminateColor(btnYellow, btnRed, btnBlue, btnGreen)
             }else
             {
                 endOfSimonSays()
             }
         }
         //Comienza el bucle del juego, esto 100% se va a tener que cambiar porque seguro que esto aquí genera errores.
-        symonSaysFunc()
+        lifecycleScope.launch {
+            delay(1000)
+            symonSaysFunc(btnYellow, btnRed, btnBlue, btnGreen)
+        }
+
     }
 }

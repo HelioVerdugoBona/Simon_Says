@@ -8,15 +8,14 @@
     android:background="#e0e0e0"
     android:orientation="vertical"
     >
-    
+
     <TextView
         android:id="@+id/LblWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:text="Bienvenido/a a Simon dice"
-        android:textSize="31dp"
-        />
+        android:textSize="31dp" />
 
     <Button
         android:id="@+id/btnStartGame"
@@ -28,6 +27,6 @@
         android:id="@+id/btnGameRules"
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:text="Reglas del Juego  (WIP)"/>
+        android:text="Como jugar"/>
 
 </LinearLayout>
