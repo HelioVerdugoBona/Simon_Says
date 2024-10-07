@@ -21,4 +21,13 @@
       --> En caso de fallar se muestra un mensaje "¡Has perdido!, mejor suerte la proxima vez 😢" y se termina el juego.
 
 ### Mirar las reglas del juego.
- --> Se muestran las reglas del juego.
+
+      -> Se mostraran las Reglas del juego enumeradas y con imagenes.
+
+### Posibles Mejoras:
+
+1. Mejorar la forma visual de las Reglas.
+   
+2. Añadir un dibujo que represente a "Simon" y que diga el color que ha "seleccionado".
+
+3. Mejorar la forma visual del menu de inicio.
