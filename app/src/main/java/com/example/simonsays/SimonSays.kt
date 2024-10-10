@@ -40,17 +40,23 @@ class SimonSays:AppCompatActivity()
     /*
     El Array donde se guardarán los valores.
     */
+
     private var arrayOfColors = ArrayList<Int>()
+    //Array de Jugadores y las rondas superadas.
 
+    private var games = mutableListOf<UserData>()
+
+    //Nombre del jugador
+
+    private var namePlayer = ""
     //Contador de la longitud de simon says.
-    private var simonSaysLength = 1
 
+    private var simonSaysLength = 1
     /*
     Función principal, deshabilita los bottones, encuentra tantos colores aleatorios como simonSaysLength
     sea de grande (empezando por 1), mientras va encontrando cada color lo muestra por pantalla, termina volviendo
     a habilitar los bottones para que el jugador repita la secuencia.
     */
-    // TODO Esto no funiona como deberia
     private fun symonSaysFunc(btnYellow: Button, btnRed: Button,
                               btnBlue: Button, btnGreen: Button)
     {
@@ -77,7 +83,6 @@ class SimonSays:AppCompatActivity()
     */
     private fun changeButtons(booleanButton: Boolean, btnYellow: Button, btnRed: Button,
                               btnBlue: Button, btnGreen: Button){
-        //TODO Esto no funiona como deberia
         btnYellow.isEnabled = booleanButton
         btnRed.isEnabled = booleanButton
         btnBlue.isEnabled = booleanButton
@@ -141,6 +146,11 @@ class SimonSays:AppCompatActivity()
     {
         val textSimonSays = findViewById<TextView>(R.id.LblSimonSays)
         textSimonSays.text = "¡Has perdido! mejor suerte la proxima vez 😢"
+        games = FilesManager.getUsersStats(this) as ArrayList<UserData>
+        val userGame = UserData(namePlayer,simonSaysLength)
+        games.add(userGame)
+        FilesManager.saveUsersStats(this,games)
+        finish()
         lifecycleScope.launch {
             delay(4000)
             finish()
@@ -151,6 +161,16 @@ class SimonSays:AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.simon_says)
+
+        val intent = intent
+        namePlayer = intent.getSerializableExtra(SimonColors.SIMONLENGTH) as String
+
+        if(!FilesManager.comproveFile(this))
+        {
+            val userData = UserData("Exemple" , 0)
+            games.add(userData)
+            FilesManager.saveUsersStats(this,games)
+        }
 
         val btnEnd = findViewById<Button>(R.id.btnEndGame)
         val btnRedo = findViewById<Button>(R.id.btnReDoGame)
@@ -170,6 +190,12 @@ class SimonSays:AppCompatActivity()
 
         //Si se presiona el boton de finalizar termina la partida.
         btnEnd.setOnClickListener {
+
+
+            val userGame = UserData(namePlayer,simonSaysLength)
+            games.add(userGame)
+            games = FilesManager.getUsersStats(this) as ArrayList<UserData>
+            FilesManager.saveUsersStats(this,games)
             finish()
         }
 
